@@ -13,17 +13,15 @@
         <p>Player:</p>
         <p>Computer:</p>
       </div>
-      <p>Player pick:</p>
-      <button class="btn-choose btn--cross" data-symbol="cross">
-        Cross ❌
-      </button>
-      <button class="btn-choose btn--circle" data-symbol="circle">
-        Circle ⭕
-      </button>
+      <p id="pptext">Player pick:</p>
+      <button class="btn btn--cross" data-symbol="cross">Cross ❌</button>
+      <button class="btn btn--circle" data-symbol="circle">Circle ⭕</button>
+      <div class="player-chose hidden"></div>
+      <button class="new-game hidden">New Game</button>
     </div>
 
     <div id="cont" class="hidden">
-      <div id="one" class="field" data-number="1"></div>
+      <div id="one" class="field"></div>
       <div id="two" class="field"></div>
       <div id="three" class="field"></div>
       <div id="four" class="field"></div>
