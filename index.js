@@ -47,6 +47,9 @@ const restartGame = function () {
   interface.addEventListener('click', function (e) {
     if (e.target === btnNew) {
       gameStarted = false;
+      playerWin = false;
+      npcWin = false;
+      gameOver = false;
       pptext.textContent = 'Player pick:';
       btnNew.classList.add('hidden');
       playerPick.classList.add('hidden');
@@ -80,7 +83,7 @@ const playGame = function () {
 const enablePlayer = function (e) {
   if (e.target.classList.contains('field') && e.target.textContent === '') {
     e.target.textContent = playerChoice === 'cross' ? '❌' : '⭕';
-    gridArr[e.target.dataset.symbol] = e.target.textContent;
+    gridArr[e.target.dataset.arr] = e.target.textContent;
     playerPick.textContent =
       playerChoice === 'cross' ? 'Computer ⭕' : 'Computer ❌';
     currPlayer = npcChoice;
@@ -93,7 +96,7 @@ const enableNPC = function (e) {
   // test with manual play
   if (e.target.classList.contains('field') && e.target.textContent === '') {
     e.target.textContent = npcChoice === 'cross' ? '❌' : '⭕';
-    gridArr[e.target.dataset.symbol] = e.target.textContent;
+    gridArr[e.target.dataset.arr] = e.target.textContent;
     playerPick.textContent =
       playerChoice === 'cross' ? 'Player ❌' : 'Player ⭕';
     currPlayer = playerChoice;
@@ -108,13 +111,35 @@ const enableNPC = function (e) {
 
 const endGame = function () {
   let count = 0;
-  let winCombo = 0;
+  const wc1 = gridArr[0] + gridArr[1] + gridArr[2];
+  const wc2 = gridArr[3] + gridArr[4] + gridArr[5];
+  const wc3 = gridArr[6] + gridArr[7] + gridArr[8];
+  const wc4 = gridArr[0] + gridArr[3] + gridArr[6];
+  const wc5 = gridArr[1] + gridArr[4] + gridArr[7];
+  const wc6 = gridArr[2] + gridArr[5] + gridArr[8];
+  const wc7 = gridArr[0] + gridArr[4] + gridArr[8];
+  const wc8 = gridArr[2] + gridArr[4] + gridArr[6];
+  const winConditions = [wc1, wc2, wc3, wc4, wc5, wc6, wc7, wc8];
+
   for (let i = 0; i < gridArr.length; i++) {
     if (gridArr[i] === '❌' || gridArr[i] === '⭕') {
       count++;
     }
 
     // win combo logic
+    if (
+      (winConditions.includes('❌❌❌') && playerChoice === 'cross') ||
+      (winConditions.includes('⭕⭕⭕') && playerChoice === 'circle')
+    ) {
+      playerWin = true;
+      showEndMessage();
+    } else if (
+      (winConditions.includes('❌❌❌') && npcChoice === 'cross') ||
+      (winConditions.includes('⭕⭕⭕') && npcChoice === 'circle')
+    ) {
+      npcWin = true;
+      showEndMessage();
+    }
   }
 
   if (count === 9) {
@@ -134,6 +159,10 @@ const showEndMessage = function () {
   `;
   const newGame = message.insertAdjacentHTML('beforeend', html);
   cont.style.pointerEvents = 'none';
+
+  playerPick.style.backgroundColor = 'gold';
+  playerPick.textContent = 'Game over';
+
   return newGame;
 };
 
