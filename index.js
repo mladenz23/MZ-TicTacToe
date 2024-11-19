@@ -1,24 +1,16 @@
 'use sctrict';
 
-const one = document.getElementById('one');
-const two = document.getElementById('two');
-const three = document.getElementById('three');
-const four = document.getElementById('four');
-const five = document.getElementById('five');
-const six = document.getElementById('six');
-const seven = document.getElementById('seven');
-const eight = document.getElementById('eight');
-const nine = document.getElementById('nine');
 const fields = document.querySelectorAll('.field');
-const cont = document.getElementById('cont');
+const cont = document.querySelector('#cont');
 const btnCross = document.querySelector('.btn--cross');
 const btnCircle = document.querySelector('.btn--circle');
-const display = document.getElementById('displayScore');
-const interface = document.getElementById('interface');
+const display = document.querySelector('#displayScore');
+const interface = document.querySelector('#interface');
 const btnNew = document.querySelector('.new-game');
 const playerPick = document.querySelector('.player-chose');
 const pptext = document.querySelector('#pptext');
 
+let gridArr = [];
 let playerChoice = '';
 let npcChoice = '';
 let currPlayer = '';
@@ -34,19 +26,18 @@ const startGame = function () {
       if (playerChoice === 'cross') npcChoice = 'circle';
       else npcChoice = 'cross';
 
-      pptext.textContent = 'Current turn:';
+      pptext.textContent = 'Current player:';
       btnCross.classList.add('hidden');
       btnCircle.classList.add('hidden');
       playerPick.classList.remove('hidden');
       btnNew.classList.remove('hidden');
 
-      if (!e.target.classList.contains('player-chose')) showPlayerStatus();
-
       playGame();
+      endGame();
+      restartGame();
     }
   });
 };
-startGame();
 
 const restartGame = function () {
   interface.addEventListener('click', function (e) {
@@ -58,18 +49,17 @@ const restartGame = function () {
       btnCross.classList.remove('hidden');
       btnCircle.classList.remove('hidden');
       cont.classList.add('hidden');
-      fields.forEach(field => {
-        field.textContent = '';
-      });
+      fields.forEach(field => (field.textContent = ''));
+      gridArr = [];
     }
   });
 };
-restartGame();
 
 const playGame = function () {
   if (gameStarted) {
     currPlayer = playerChoice;
-    const filledFields = [];
+    playerPick.textContent =
+      playerChoice === 'cross' ? 'Player ❌' : 'Player ⭕';
 
     cont.addEventListener('click', function (e) {
       if (currPlayer === playerChoice) {
@@ -84,6 +74,9 @@ const playGame = function () {
 const enablePlayer = function (e) {
   if (e.target.classList.contains('field') && e.target.textContent === '') {
     e.target.textContent = playerChoice === 'cross' ? '❌' : '⭕';
+    gridArr[e.target.dataset.symbol] = e.target.textContent;
+    playerPick.textContent =
+      playerChoice === 'cross' ? 'Computer ⭕' : 'Computer ❌';
     currPlayer = npcChoice;
   }
 };
@@ -94,6 +87,9 @@ const enableNPC = function (e) {
   // test with manual play
   if (e.target.classList.contains('field') && e.target.textContent === '') {
     e.target.textContent = npcChoice === 'cross' ? '❌' : '⭕';
+    gridArr[e.target.dataset.symbol] = e.target.textContent;
+    playerPick.textContent =
+      playerChoice === 'cross' ? 'Player ❌' : 'Player ⭕';
     currPlayer = playerChoice;
   }
 
@@ -104,10 +100,12 @@ const enableNPC = function (e) {
   });
 };
 
-const switchPlayer = function () {};
-
-const showPlayerStatus = function () {
-  playerChoice === 'cross'
-    ? (playerPick.textContent = 'Cross ❌')
-    : (playerPick.textContent = 'Circle ⭕');
+const endGame = function () {
+  fields.forEach((field, i) => {
+    if (field.textContent !== '') {
+      gridArr[i].push(field.textContent);
+    }
+  });
 };
+
+startGame();
