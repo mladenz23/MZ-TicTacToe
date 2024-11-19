@@ -17,10 +17,8 @@ Game keeps score of the winnings.
 
   Things to do:
 
-  - Alternate between player and computer picks ✔
+  - Alternate between player and computer picks (partially done)
   - End when someone wins
-  - End when grid is full (win or tie)
+  - End when grid is full ✔
   - Update the scoreboard
-  - Start new round
-  - First to 5 rounds won wins the game
-  - Start new game (reset scoreboard)
+  - Start new round ✔
