@@ -25,6 +25,7 @@ const startGame = function () {
     if (e.target.classList.contains('btn')) {
       gameStarted = true;
       cont.classList.remove('hidden');
+      cont.style.pointerEvents = 'auto';
 
       playerChoice = e.target.dataset.symbol;
       if (playerChoice === 'cross') npcChoice = 'circle';
@@ -118,11 +119,11 @@ const endGame = function () {
 
   if (count === 9) {
     gameOver = true;
-    endGameMsg();
+    showEndMessage();
   }
 };
 
-const endGameMsg = function () {
+const showEndMessage = function () {
   message.classList.remove('hidden');
   message.innerHTML = '';
   const html = `

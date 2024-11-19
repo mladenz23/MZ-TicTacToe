@@ -14,6 +14,7 @@ body {
   box-sizing: border-box;
   background-color: var(--bg);
   user-select: none;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 #cont {
@@ -35,8 +36,8 @@ body {
 }
 
 .hidden {
-  display: none;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
 }
 
@@ -72,7 +73,6 @@ body {
   margin-top: 20px;
   height: 45px;
   font-size: 20px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
   border: none;
   background-color: var(--light);
   border-radius: 5px;
@@ -111,12 +111,19 @@ body {
 }
 
 #endMessage {
-  width: 400px;
-  height: 350px;
-  background-color: var(--bg);
-  border: 10px solid var(--blk);
+  width: 300px;
+  height: 250px;
+  background-color: var(--light);
+  border: 10px solid #fff;
+  box-shadow: 5px 5px 5px var(--blk), -5px -5px 5px var(--blk);
   border-radius: 20px;
   position: absolute;
-  margin: 60px 0 0 35px;
-  transition-timing-function: ease-in;
+  margin: 110px 0 0 85px;
+  transition: opacity 0.3s ease;
+  font-size: 25px;
+  color: var(--blk);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
