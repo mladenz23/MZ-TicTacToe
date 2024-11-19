@@ -9,12 +9,16 @@ const interface = document.querySelector('#interface');
 const btnNew = document.querySelector('.new-game');
 const playerPick = document.querySelector('.player-chose');
 const pptext = document.querySelector('#pptext');
+const message = document.querySelector('#endMessage');
 
 let gridArr = [];
 let playerChoice = '';
 let npcChoice = '';
 let currPlayer = '';
 let gameStarted = false;
+let playerWin = false;
+let npcWin = false;
+let gameOver = false;
 
 const startGame = function () {
   interface.addEventListener('click', function (e) {
@@ -33,7 +37,6 @@ const startGame = function () {
       btnNew.classList.remove('hidden');
 
       playGame();
-      endGame();
       restartGame();
     }
   });
@@ -41,7 +44,7 @@ const startGame = function () {
 
 const restartGame = function () {
   interface.addEventListener('click', function (e) {
-    if (e.target.classList.contains('new-game')) {
+    if (e.target === btnNew) {
       gameStarted = false;
       pptext.textContent = 'Player pick:';
       btnNew.classList.add('hidden');
@@ -51,6 +54,7 @@ const restartGame = function () {
       cont.classList.add('hidden');
       fields.forEach(field => (field.textContent = ''));
       gridArr = [];
+      message.classList.add('hidden');
     }
   });
 };
@@ -67,6 +71,7 @@ const playGame = function () {
       } else if (currPlayer === npcChoice) {
         enableNPC(e);
       }
+      endGame();
     });
   }
 };
@@ -101,11 +106,34 @@ const enableNPC = function (e) {
 };
 
 const endGame = function () {
-  fields.forEach((field, i) => {
-    if (field.textContent !== '') {
-      gridArr[i].push(field.textContent);
+  let count = 0;
+  let winCombo = 0;
+  for (let i = 0; i < gridArr.length; i++) {
+    if (gridArr[i] === '❌' || gridArr[i] === '⭕') {
+      count++;
     }
-  });
+
+    // win combo logic
+  }
+
+  if (count === 9) {
+    gameOver = true;
+    endGameMsg();
+  }
+};
+
+const endGameMsg = function () {
+  message.classList.remove('hidden');
+  message.innerHTML = '';
+  const html = `
+    ${gameOver ? "<p>It's a tie.</p>" : ''}
+    ${playerWin ? 'You won! 🥳' : ''}
+    ${npcWin ? 'Computer won! 🤖' : ''}
+    <p>Start new game</p>
+  `;
+  const newGame = message.insertAdjacentHTML('beforeend', html);
+  cont.style.pointerEvents = 'none';
+  return newGame;
 };
 
 startGame();

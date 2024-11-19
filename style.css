@@ -1,5 +1,5 @@
 :root {
-  --black: #000;
+  --blk: #222;
   --bg: #4d4d53;
   --light: #ccc;
   --player: rgb(190, 255, 190);
@@ -108,4 +108,15 @@ body {
 
 .new-game {
   background-color: rgb(255, 171, 171);
+}
+
+#endMessage {
+  width: 400px;
+  height: 350px;
+  background-color: var(--bg);
+  border: 10px solid var(--blk);
+  border-radius: 20px;
+  position: absolute;
+  margin: 60px 0 0 35px;
+  transition-timing-function: ease-in;
 }
