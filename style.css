@@ -2,7 +2,8 @@
   --blk: #222;
   --bg: #4d4d53;
   --light: #ccc;
-  --player: rgb(190, 255, 190);
+  --player: rgb(143, 150, 255);
+  --npc: rgb(255, 163, 163);
 }
 
 body {
@@ -107,7 +108,7 @@ body {
 }
 
 .new-game {
-  background-color: rgb(255, 171, 171);
+  background-color: var(--light);
 }
 
 #endMessage {

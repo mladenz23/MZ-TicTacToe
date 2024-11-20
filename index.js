@@ -79,6 +79,7 @@ const restartGame = function () {
   resetGrid();
   currPlayer = '';
   cont.style.pointerEvents = 'auto';
+  playerPick.style.backgroundColor = 'var(--player)';
 };
 
 const playGame = function () {
@@ -95,6 +96,7 @@ const enablePlayer = function (e) {
     gridArr[e.target.dataset.arr] = e.target.textContent;
     playerPick.textContent =
       playerChoice === 'cross' ? 'Computer ⭕' : 'Computer ❌';
+    playerPick.style.backgroundColor = 'var(--npc)';
     currPlayer = npcChoice;
   }
 };
@@ -108,6 +110,7 @@ const enableNPC = function (e) {
     gridArr[e.target.dataset.arr] = e.target.textContent;
     playerPick.textContent =
       playerChoice === 'cross' ? 'Player ❌' : 'Player ⭕';
+    playerPick.style.backgroundColor = 'var(--player)';
     currPlayer = playerChoice;
   }
 

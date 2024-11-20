@@ -20,5 +20,5 @@ Game keeps score of the winnings.
   - Alternate between player and computer picks (partially done)
   - End when someone wins ✔
   - End when grid is full ✔
-  - Update the scoreboard
+  - Update the scoreboard ✔
   - Start new round ✔
