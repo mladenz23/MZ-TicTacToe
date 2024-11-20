@@ -20,7 +20,7 @@ let gameStarted = false;
 let playerWin = false;
 let npcWin = false;
 let tieGame = false;
-
+let gameOver = false;
 let isListenersAttached = false;
 
 const startGame = function () {
@@ -49,11 +49,10 @@ const startGame = function () {
   btnNew.addEventListener('click', restartGame);
 
   cont.addEventListener('click', function (e) {
+    if (gameOver) return;
     if (e.target.classList.contains('field')) {
       if (currPlayer === playerChoice) {
         enablePlayer(e);
-      } else if (currPlayer === npcChoice) {
-        enableNPC(e);
       }
       endGame();
     }
@@ -67,6 +66,7 @@ const restartGame = function () {
   playerWin = false;
   npcWin = false;
   tieGame = false;
+  gameOver = false;
 
   pptext.textContent = 'Player pick:';
   btnNew.classList.add('hidden');
@@ -84,41 +84,54 @@ const restartGame = function () {
 
 const playGame = function () {
   if (gameStarted) {
-    currPlayer = playerChoice;
+    if (playerChoice === 'cross') currPlayer = playerChoice;
+    else {
+      currPlayer = npcChoice;
+      enableNPC();
+    }
     playerPick.textContent =
       playerChoice === 'cross' ? 'Player ❌' : 'Player ⭕';
   }
 };
 
 const enablePlayer = function (e) {
+  if (gameOver) return;
   if (e.target.classList.contains('field') && e.target.textContent === '') {
     e.target.textContent = playerChoice === 'cross' ? '❌' : '⭕';
     gridArr[e.target.dataset.arr] = e.target.textContent;
+
     playerPick.textContent =
       playerChoice === 'cross' ? 'Computer ⭕' : 'Computer ❌';
     playerPick.style.backgroundColor = 'var(--npc)';
     currPlayer = npcChoice;
+
+    enableNPC();
   }
 };
 
-const enableNPC = function (e) {
-  const randField = Math.trunc(Math.random() * fields.length);
+const enableNPC = function () {
+  if (gameOver) return;
 
-  // test with manual play
-  if (e.target.classList.contains('field') && e.target.textContent === '') {
-    e.target.textContent = npcChoice === 'cross' ? '❌' : '⭕';
-    gridArr[e.target.dataset.arr] = e.target.textContent;
-    playerPick.textContent =
-      playerChoice === 'cross' ? 'Player ❌' : 'Player ⭕';
-    playerPick.style.backgroundColor = 'var(--player)';
-    currPlayer = playerChoice;
+  const emptyFields = Array.from(fields).filter(
+    field => field.textContent === ''
+  );
+
+  if (emptyFields.length > 0) {
+    setTimeout(function () {
+      const randField =
+        emptyFields[Math.floor(Math.random() * emptyFields.length)];
+
+      randField.textContent = npcChoice === 'cross' ? '❌' : '⭕';
+      gridArr[randField.dataset.arr] = randField.textContent;
+
+      playerPick.textContent =
+        playerChoice === 'cross' ? 'Player ❌' : 'Player ⭕';
+      playerPick.style.backgroundColor = 'var(--player)';
+      currPlayer = playerChoice;
+
+      endGame();
+    }, 2000);
   }
-
-  // implement automatic pick by computer
-  fields.forEach(field => {
-    // if (field === '') {
-    // }
-  });
 };
 
 const endGame = function () {
@@ -138,11 +151,11 @@ const endGame = function () {
       count++;
     }
 
-    // win combo logic
     if (
       (winConditions.includes('❌❌❌') && playerChoice === 'cross') ||
       (winConditions.includes('⭕⭕⭕') && playerChoice === 'circle')
     ) {
+      gameOver = true;
       playerWin = true;
       showEndMessage();
       updateScoreBoard();
@@ -151,6 +164,7 @@ const endGame = function () {
       (winConditions.includes('❌❌❌') && npcChoice === 'cross') ||
       (winConditions.includes('⭕⭕⭕') && npcChoice === 'circle')
     ) {
+      gameOver = true;
       npcWin = true;
       showEndMessage();
       updateScoreBoard();
@@ -159,6 +173,7 @@ const endGame = function () {
   }
 
   if (count === 9) {
+    gameOver = true;
     tieGame = true;
     showEndMessage();
   }
