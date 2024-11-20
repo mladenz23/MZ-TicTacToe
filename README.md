@@ -18,7 +18,7 @@ Game keeps score of the winnings.
   Things to do:
 
   - Alternate between player and computer picks (partially done)
-  - End when someone wins
+  - End when someone wins ✔
   - End when grid is full ✔
   - Update the scoreboard
   - Start new round ✔
