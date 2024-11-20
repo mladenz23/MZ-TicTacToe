@@ -159,8 +159,11 @@ const endGame = function () {
       playerWin = true;
       showEndMessage();
       updateScoreBoard();
+      cont.style.pointerEvents = 'none';
       return;
-    } else if (
+    }
+
+    if (
       (winConditions.includes('❌❌❌') && npcChoice === 'cross') ||
       (winConditions.includes('⭕⭕⭕') && npcChoice === 'circle')
     ) {
@@ -168,6 +171,7 @@ const endGame = function () {
       npcWin = true;
       showEndMessage();
       updateScoreBoard();
+      cont.style.pointerEvents = 'none';
       return;
     }
   }
@@ -176,6 +180,7 @@ const endGame = function () {
     gameOver = true;
     tieGame = true;
     showEndMessage();
+    cont.style.pointerEvents = 'none';
   }
 };
 
@@ -200,16 +205,20 @@ const showEndMessage = function () {
 const updateScoreBoard = function () {
   if (playerWin) {
     scoreHelper(playerScore);
+    return;
   }
   if (npcWin) {
     scoreHelper(npcScore);
+    return;
   }
 };
 
 const scoreHelper = function (scr) {
-  const score = +scr.textContent;
+  let score = +scr.textContent;
   scr.textContent = score + 1;
 };
+
+const endHelper = function () {};
 
 const resetGrid = function () {
   fields.forEach(field => (field.textContent = ''));

@@ -23,3 +23,7 @@ Game keeps score of the winnings.
   - Update the scoreboard ✔
   - Start new round ✔
   - Add random picking by NPC ✔
+  - Fix bugs:
+    - npc move being made after player wins the game
+    - score updates by 2 after player win (probably
+      has something to do with the first bug)
