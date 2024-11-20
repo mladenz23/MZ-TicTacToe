@@ -112,14 +112,14 @@ body {
 }
 
 #endMessage {
-  width: 300px;
-  height: 250px;
+  width: 440px;
+  height: 440px;
   background-color: var(--light);
   border: 10px solid #fff;
   box-shadow: 5px 5px 5px var(--blk), -5px -5px 5px var(--blk);
   border-radius: 20px;
   position: absolute;
-  margin: 110px 0 0 85px;
+  margin: 15px 0 0 15px;
   transition: opacity 0.3s ease;
   font-size: 25px;
   color: var(--blk);
