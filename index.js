@@ -8,7 +8,6 @@ const interface = document.querySelector('#interface');
 const btnNew = document.querySelector('.new-game');
 const playerPick = document.querySelector('.player-chose');
 const pptext = document.querySelector('#pptext');
-const message = document.querySelector('#endMessage');
 const playerScore = document.querySelector('.playerScore');
 const npcScore = document.querySelector('.npcScore');
 
@@ -74,7 +73,6 @@ const restartGame = function () {
   btnCross.classList.remove('hidden');
   btnCircle.classList.remove('hidden');
   cont.classList.add('hidden');
-  message.classList.add('hidden');
 
   resetGrid();
   currPlayer = '';
@@ -95,7 +93,6 @@ const playGame = function () {
 };
 
 const enablePlayer = function (e) {
-  if (gameOver) return;
   if (e.target.classList.contains('field') && e.target.textContent === '') {
     e.target.textContent = playerChoice === 'cross' ? '❌' : '⭕';
     gridArr[e.target.dataset.arr] = e.target.textContent;
@@ -110,14 +107,14 @@ const enablePlayer = function (e) {
 };
 
 const enableNPC = function () {
-  if (gameOver) return;
-
   const emptyFields = Array.from(fields).filter(
     field => field.textContent === ''
   );
 
   if (emptyFields.length > 0) {
     setTimeout(function () {
+      if (gameOver) return;
+
       const randField =
         emptyFields[Math.floor(Math.random() * emptyFields.length)];
 
@@ -150,39 +147,23 @@ const endGame = function () {
     if (gridArr[i] === '❌' || gridArr[i] === '⭕') {
       count++;
     }
-
-    if (
-      (winConditions.includes('❌❌❌') && playerChoice === 'cross') ||
-      (winConditions.includes('⭕⭕⭕') && playerChoice === 'circle')
-    ) {
-      gameOver = true;
-      playerWin = true;
-      showEndMessage();
-      updateScoreBoard();
-      cont.style.pointerEvents = 'none';
-      return;
-    }
-
-    if (
-      (winConditions.includes('❌❌❌') && npcChoice === 'cross') ||
-      (winConditions.includes('⭕⭕⭕') && npcChoice === 'circle')
-    ) {
-      gameOver = true;
-      npcWin = true;
-      showEndMessage();
-      updateScoreBoard();
-      cont.style.pointerEvents = 'none';
-      return;
-    }
   }
 
-  if (count === 9) {
-    gameOver = true;
-    tieGame = true;
-    showEndMessage();
-    cont.style.pointerEvents = 'none';
-    return;
-  }
+  if (
+    (winConditions.includes('❌❌❌') && playerChoice === 'cross') ||
+    (winConditions.includes('⭕⭕⭕') && playerChoice === 'circle')
+  )
+    playerWin = true;
+
+  if (
+    (winConditions.includes('❌❌❌') && npcChoice === 'cross') ||
+    (winConditions.includes('⭕⭕⭕') && npcChoice === 'circle')
+  )
+    npcWin = true;
+
+  if (count === 9 && !playerWin && !npcWin) tieGame = true;
+
+  if (playerWin || npcWin || tieGame) endHelper();
 };
 
 const showEndMessage = function () {
@@ -191,18 +172,11 @@ const showEndMessage = function () {
   if (playerWin) playerPick.textContent = 'YOU WON 🥳';
   if (npcWin) playerPick.textContent = 'YOU LOST 😭';
   if (tieGame) playerPick.textContent = "IT'S A TIE 😶";
-  return;
 };
 
 const updateScoreBoard = function () {
-  if (playerWin) {
-    scoreHelper(playerScore);
-    return;
-  }
-  if (npcWin) {
-    scoreHelper(npcScore);
-    return;
-  }
+  if (playerWin) scoreHelper(playerScore);
+  if (npcWin) scoreHelper(npcScore);
 };
 
 const scoreHelper = function (scr) {
@@ -210,7 +184,13 @@ const scoreHelper = function (scr) {
   scr.textContent = score + 1;
 };
 
-const endHelper = function () {};
+const endHelper = function () {
+  gameOver = true;
+  showEndMessage();
+  updateScoreBoard();
+  cont.style.pointerEvents = 'none';
+  return;
+};
 
 const resetGrid = function () {
   fields.forEach(field => (field.textContent = ''));
