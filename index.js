@@ -127,7 +127,7 @@ const enableNPC = function () {
       currPlayer = playerChoice;
 
       endGame();
-    }, 2000);
+    }, 1000);
   }
 };
 
