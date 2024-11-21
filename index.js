@@ -181,25 +181,17 @@ const endGame = function () {
     tieGame = true;
     showEndMessage();
     cont.style.pointerEvents = 'none';
+    return;
   }
 };
 
 const showEndMessage = function () {
-  message.classList.remove('hidden');
-  message.innerHTML = '';
-  const html = `
-    ${tieGame ? "<p>It's a tie.</p>" : ''}
-    ${playerWin ? 'You won! 🥳' : ''}
-    ${npcWin ? 'Computer won! 🤖' : ''}
-    <p>Start new game</p>
-  `;
-  const newGame = message.insertAdjacentHTML('beforeend', html);
   cont.style.pointerEvents = 'none';
-
   playerPick.style.backgroundColor = 'gold';
-  playerPick.textContent = 'Game over';
-
-  return newGame;
+  if (playerWin) playerPick.textContent = 'YOU WON 🥳';
+  if (npcWin) playerPick.textContent = 'YOU LOST 😭';
+  if (tieGame) playerPick.textContent = "IT'S A TIE 😶";
+  return;
 };
 
 const updateScoreBoard = function () {
